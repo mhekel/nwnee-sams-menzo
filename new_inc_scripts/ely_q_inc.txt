@@ -1,0 +1,235 @@
+                                                                                                                                                                                                                                                                                                                                   
+
+NWScript:
+//::///////////////////////////////////////////////
+//:: thadeus' Questing And Journal Setting Functions
+//:: INCLUDE_QUESTING
+//:://////////////////////////////////////////////
+/*
+    This include file contains all functions to set the state of a quest and the
+    appropriate journal entry.
+*/
+//:://////////////////////////////////////////////
+//:: Created By: 
+//:: Created On: 
+//:: 
+//:: 
+//:://////////////////////////////////////////////
+/*
+*/
+//:://////////////////////////////////////////////
+//  CONSTANTS
+//:://////////////////////////////////////////////
+int QUEST_UNASSIGNED = 0;
+    // an unassigned quest
+int QUEST_COMPLETED = 1000;
+    // a completed quest
+//:://////////////////////////////////////////////
+// FUNCTIONS
+//:://////////////////////////////////////////////
+int GetQuestState(string QUEST_ID);
+    // Returns the current quest state
+int GetQuestAssigned(string QUEST_ID);
+    // Returns TRUE if the quest has been assigned and not completed
+    // Returns FALSE if the quest has been completed or not assigned at all
+int GetQuestUnassigned(string QUEST_ID);
+    // Returns TRUE if the quest has not been assigned
+    // Returns FALSE if the quest has been assigned or completed
+int GetQuestCompleted(string QUEST_ID);
+    // Returns TRUE if the quest has been completed
+void GiveQuestXP(object oPlayer, string QUEST_ID);
+    // Gives the players the XP associated with the quest
+void SetQuestState(object oPlayer, int QUEST_STATE, string QUEST_ID);
+    // Sets the quest to the required state
+void SetQuestNextState(object oPlayer, string QUEST_ID);
+    // Sets the quest to the next state (the state is incremented by one)
+void SetQuestCompleted(object oPlayer, int JOURNAL_NUMBER, string QUEST_ID);
+    // Sets the quest to completed and the journal to the final entry with
+    // number JOURNAL_ID
+// See the comment within each function for more details
+//:://////////////////////////////////////////////
+// FUNCTION IMPLEMENTATION
+//:://////////////////////////////////////////////
+int GetQuestState(string QUEST_ID)
+/*
+    QUEST_ID = the ID of the quest
+    Returns the current quest state of the quest given by QUEST_ID.
+    This function can be used to check the quest state so that certain events
+    are fired (eg. an ambush like the assassins in chapter 1) or to allow a
+    certain dialogue line in a conversation file.
+*/
+{
+    string QUEST_STRING = "QUEST_" + QUEST_ID;
+        // the name of the variable in which the quest state will be stored
+    return (GetLocalInt(GetModule(),QUEST_STRING));
+        // return the value stored in the variable with name QUEST_STRING
+}
+int GetQuestAssigned(string QUEST_ID)
+/*
+    QUEST_ID = the ID of the quest
+    Returns TRUE if the quest has been assigned and not completed.
+    Returns FALSE if the quest has been completed or not assigned at all.
+*/
+{
+    int CURRENT_STATE = GetQuestState(QUEST_ID);
+        // Retrieve the current state of the quest
+    if ((CURRENT_STATE == QUEST_UNASSIGNED) || (CURRENT_STATE == QUEST_COMPLETED))
+        // if the quest is unassigned or completed, return FALSE
+    {
+        return FALSE;
+    }
+    return TRUE;
+}
+int GetQuestUnassigned(string QUEST_ID)
+/*
+    QUEST_ID = the ID of the quest
+    Returns TRUE if the quest is not assigned
+    Returns FALSE if the quest has been assigned or completed
+*/
+{
+    int CURRENT_STATE = GetQuestState(QUEST_ID);
+        // Retrieve the current state of the quest
+    if (CURRENT_STATE != QUEST_UNASSIGNED)
+        // if the quest is not unassigned (this is assigned or completed),
+        //return FALSE
+    {
+        return FALSE;
+    }
+    return TRUE;
+}
+int GetQuestCompleted(string QUEST_ID)
+/*
+    QUEST_ID = the ID of the quest
+    Returns TRUE if the quest has been completed
+    Returns FALSE if the quest has not been completed
+*/
+{
+    int CURRENT_STATE = GetQuestState(QUEST_ID);
+        // Retrieve the current state of the quest
+    if (CURRENT_STATE != QUEST_COMPLETED)
+        // if the quest is not completed, return FALSE
+    {
+        return FALSE;
+    }
+    return TRUE;
+}
+void GiveQuestXP(object oPlayer, string QUEST_ID)
+/*
+    oPlayer = this must be a PC
+    QUEST_ID = the ID of the quest
+    Gives the players the XP associated with the quest.
+*/
+{
+    string JOURNAL_STRING = "JOURNAL_" + QUEST_ID;
+        // Name of the journal category in which the journal entries of the
+        // quest are stored
+    int QUEST_XP = GetJournalQuestExperience(JOURNAL_STRING);
+        // Get the XP
+    GiveXPToCreature(oPlayer,QUEST_XP);
+        // Give the XP
+}
+void SetQuestState(object oPlayer, int QUEST_STATE, string QUEST_ID)
+/*
+    oPlayer = this must be a PC
+    QUEST_STATE = the quest state you want to set
+    QUEST_ID = the ID of the quest
+    This function sets the quest state of the quest given by QUEST_ID to the
+    state given by QUEST_STATE. The journal is set then to the QUEST_STATE.
+    If the current state is the one to be set, if the state to be set is lower
+    than the current state or if the quest has been completed, nothing will
+    happen.
+    BEWARE: NO BACKSETTING IS POSSIBLE, design quests so that no quest must be
+    set to a lower state.
+    This function can be used to set the state to a particular value when
+    multiple ways of reaching a goal are possible.
+*/
+{
+    string QUEST_STRING = "QUEST_" + QUEST_ID;
+        // the name of the variable in which the quest state will be stored
+    string JOURNAL_STRING = "JOURNAL_" + QUEST_ID;
+        // Name of the journal category in which the journal entries of the
+        // quest are stored
+    int CURRENT_QUEST_STATE = GetQuestState(QUEST_ID);
+        // retrieve the current quest state
+    if (!(GetQuestCompleted(QUEST_ID)) && !(CURRENT_QUEST_STATE >= QUEST_STATE))
+        // the quest may not be completed and the current quest state may not be
+        // greater or equal the one to be set
+    {
+        SetLocalInt(GetModule(),QUEST_STRING,QUEST_STATE);
+            // Setting the new state
+        AddJournalQuestEntry(JOURNAL_STRING,QUEST_STATE,oPlayer);
+            // Adjusting the journal accordingly
+    }
+}
+void SetQuestNextState(object oPlayer, string QUEST_ID)
+/*
+    oPlayer = this must be a PC
+    QUEST_ID = the ID of the quest
+    This function sets the quest state of the quest given by QUEST_ID to the
+    next state. The journal is set to the next entry. When the quest has been
+    completed, nothing happens.
+    This is a function that can be used for a entirely linear quest, still: care
+    must be taken when using this function since it is possible for a certain
+    (repeating) event to increase the state multiple times! I recommend using
+    the SetQuestState function.
+*/
+{
+    string QUEST_STRING = "QUEST_" + QUEST_ID;
+        // the name of the variable in which the quest state will be stored
+    string JOURNAL_STRING = "JOURNAL_" + QUEST_ID;
+        // Name of the journal category in which the journal entries of the
+        // quest are stored
+    if (!(GetQuestCompleted(QUEST_ID)))
+    // the quest may not be completed
+    {
+        int QUEST_STATE = GetLocalInt(GetModule(),QUEST_STRING);
+            // Retrieving current quest state
+        QUEST_STATE++;
+            // Increment the quest state
+        SetLocalInt(GetModule(),QUEST_STRING,QUEST_STATE);
+            // Setting the new state
+        AddJournalQuestEntry(JOURNAL_STRING,QUEST_STATE,oPlayer);
+            // Adjusting the journal accordingly
+    }
+}
+void SetQuestCompleted(object oPlayer, int JOURNAL_NUMBER, string QUEST_ID)
+/*
+    oPlayer = this must be a PC
+    JOURNAL_ID = the entry the journal must be set to when the quest is
+                 completed
+    QUEST_ID = the ID of the quest
+    This function sets the quest state of the quest given by QUEST_ID to
+    completed. The journal is set to the entry with number JOURNAL_NUMBER. The
+    players will receive the XP reward of the quest. When the quest has already
+    been completed, nothing happens. Make sure the entry is a finishing entry so
+    that it will be put in the completed quests.
+    This function can be used to set multiple endings of a quest.
+*/
+{
+    string QUEST_STRING = "QUEST_" + QUEST_ID;
+        // the name of the variable in which the quest state will be stored
+    string JOURNAL_STRING = "JOURNAL_" + QUEST_ID;
+        // Name of the journal category in which the journal entries of the
+        // quest are stored
+    if (!(GetQuestCompleted(QUEST_ID)))
+        // if the quest is not completed
+    {
+        SetLocalInt(GetModule(),QUEST_STRING,QUEST_COMPLETED);
+            // Setting the quest to completed
+        AddJournalQuestEntry(JOURNAL_STRING,JOURNAL_NUMBER,oPlayer);
+            // Adjusting the journal accordingly
+        GiveQuestXP(oPlayer,QUEST_ID);
+            // Give players XP of the quest
+    }
+}
+Author	Sticky: Post Working Scripts Here
+thadeus	Posted: Monday, 29 July 07:41PM
+Concerning the include file include_questing.
+
+I apparently forgot to mention that you can copy the file to the module you want (save it as include_questing). To use it in a script, just put the following line at the top of the script:
+
+NWScript:
+#include "include_questing"
+
+
+Send any comment or suggestions to me.
