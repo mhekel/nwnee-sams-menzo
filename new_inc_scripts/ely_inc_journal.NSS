@@ -9,16 +9,16 @@
 #include "ely_inc_item"
 
 //void main() {}
-
+//TODO start
 const string QPR_SUFFIX		= "_XP_QPR";
 
-// 2da table and column names
+// 2da table and column names TO
 const string TABLE_XP_AWARD	= "k_xp_awards";
 const string COL_XP			= "XP";
 const string COL_STR_REF	= "DescStrRef";
 const string COL_TEXT		= "DescriptionText";
 
-
+// tod0 end
 //-------------------------------------------------
 // Function Prototypes
 //-------------------------------------------------
