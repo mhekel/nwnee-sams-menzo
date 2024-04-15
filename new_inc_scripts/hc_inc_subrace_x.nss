@@ -47,10 +47,10 @@ int IsDrow(object oPC) {
     return FALSE;
 }
 
-int IsSvirfneblin(object oPC) {
+int IsDeepGnome(object oPC) {
     if (GetRacialType(oPC) == RACIAL_TYPE_GNOME) {
         string sSubRace = GetStringLowerCase(GetSubRace(oPC));
-        if (sSubRace == "deep gnome" || sSubRace == "svirfneblin") {
+        if (sSubRace == "deep gnome" || sSubRace == "Goblin") {
             return TRUE;
         } else {
             return FALSE;
@@ -67,59 +67,39 @@ int IsElf(object oPC) {
     return GetRacialType(oPC) == RACIAL_TYPE_ELF;
 }
 
-int IsSunElf(object oPC) {
-    if (IsElf(oPC)) {
-        if (GetSubRace(oPC) == "Sun Elf") {
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
-
-int IsWildElf(object oPC) {
-    if (IsElf(oPC)) {
-        if (GetStringLowerCase(GetSubRace(oPC)) == "wild elf") {
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
-
 int IsWoodElf(object oPC) {
     if (IsElf(oPC)) {
-        if (GetStringLowerCase(GetSubRace(oPC)) == "wood elf") {
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
-
-int IsGoldDwarf(object oPC) {
-    if (GetRacialType(oPC) == RACIAL_TYPE_DWARF) {
-        if (GetStringLowerCase(GetSubRace(oPC)) == "gold dwarf") {
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
-
-
-int IsAluDemon(object oPC) {
-    if (GetGender(oPC) == GENDER_FEMALE) {
-        string sSubRace = GetStringLowerCase(GetSubRace(oPC));
-        if (sSubRace == "alu-demon") {
+        if (GetSubRace(oPC) == "Wood Elf")  {
             return TRUE;
         } else {
             return FALSE;
         }
-    }
+    return FALSE;
+}
+int IsAluFiend(object oPC) {
+
+        string sSubRace = GetStringLowerCase(GetSubRace(oPC));
+        if (sSubRace == "alu-Fiend") {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    return FALSE;
+}
+int IsAluDemon(object oPC) {
+  
+        string sSubRace = GetStringLowerCase(GetSubRace(oPC));
+        if (sSubRace == "alu-Demon")  {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     return FALSE;
 }
 
 int IsCambion(object oPC) {
-    if (GetGender(oPC) == GENDER_MALE) {
         string sSubRace = GetStringLowerCase(GetSubRace(oPC));
-        if (sSubRace == "cambion") {
+        if (sSubRace == "Cambion") {
             return TRUE;
         } else {
             return FALSE;
@@ -237,16 +217,11 @@ void GiveDeepGnomeAbility(object oPC) {
     object oItem;
     oItem = GetFirstItemInInventory(oPC);
     while (oItem != OBJECT_INVALID) {
-        if (GetTag(oItem) == "svirfneblinblur") DestroyObject(oItem);
+        if (GetTag(oItem) == "deepgnomeability") DestroyObject(oItem);
         oItem = GetNextItemInInventory(oPC);
+   
     }
-    CreateItemOnObject("svirfneblinblur", oPC);
-    oItem = GetFirstItemInInventory(oPC);
-    while (oItem != OBJECT_INVALID) {
-        if (GetTag(oItem) == "svirfneblinblind") DestroyObject(oItem);
-        oItem = GetNextItemInInventory(oPC);
-    }
-    CreateItemOnObject("svirfneblinblind", oPC);
+    CreateItemOnObject("deepgnomeability", oPC);
 }
 
 void GiveDrowAbility(object oPC) {
@@ -263,42 +238,51 @@ void GiveTieflingAbility(object oPC) {
     object oItem;
     oItem = GetFirstItemInInventory(oPC);
     while (oItem != OBJECT_INVALID) {
-        if (GetTag(oItem) == "tieflingdarkness") DestroyObject(oItem);
+        if (GetTag(oItem) == "tieflingability") DestroyObject(oItem);
         oItem = GetNextItemInInventory(oPC);
     }
-    CreateItemOnObject("tieflingdarkness", oPC);
+    CreateItemOnObject("tieflingabilty", oPC);
 }
-
+void GiveAluFiendAbility(object oPC) {
+    object oItem;
+    oItem = GetFirstItemInInventory(oPC);
+    while (oItem != OBJECT_INVALID) {
+        if (GetTag(oItem) == "alufiendability") DestroyObject(oItem);
+        oItem = GetNextItemInInventory(oPC);
+    }
+    CreateItemOnObject("alufiendability", oPC);
+}
 void GiveAluDemonAbility(object oPC) {
     object oItem;
     oItem = GetFirstItemInInventory(oPC);
     while (oItem != OBJECT_INVALID) {
-        if (GetTag(oItem) == "aludemoncharm") DestroyObject(oItem);
+        if (GetTag(oItem) == "aludemonability") DestroyObject(oItem);
         oItem = GetNextItemInInventory(oPC);
     }
-    CreateItemOnObject("aludemoncharm", oPC);
+    CreateItemOnObject("aludemonability", oPC);
 }
 
 void GiveCambionAbility(object oPC) {
     object oItem;
     oItem = GetFirstItemInInventory(oPC);
     while (oItem != OBJECT_INVALID) {
-        if (GetTag(oItem) == "cambionfear") DestroyObject(oItem);
+        if (GetTag(oItem) == "cambionability") DestroyObject(oItem);
         oItem = GetNextItemInInventory(oPC);
     }
-    CreateItemOnObject("cambionfear", oPC);
+    CreateItemOnObject("cambionability", oPC);
 }
 
 void GiveAasimarAbility(object oPC) {
     object oItem;
     oItem = GetFirstItemInInventory(oPC);
     while (oItem != OBJECT_INVALID) {
-        if (GetTag(oItem) == "aasimarlight") DestroyObject(oItem);
+        if (GetTag(oItem) == "aasimarability") DestroyObject(oItem);
         oItem = GetNextItemInInventory(oPC);
     }
-    CreateItemOnObject("aasimarlight", oPC);
+    CreateItemOnObject("aasimarability", oPC);
 }
 
+ 
 void ApplyDrowLightEffects(object oTarget, int nDuration = 0) {
     ApplyEffectToObject(DURATION_TYPE_TEMPORARY, SupernaturalEffect(EffectAttackDecrease(1)), oTarget, IntToFloat(nDuration));
     ApplyEffectToObject(DURATION_TYPE_TEMPORARY, SupernaturalEffect(EffectSavingThrowDecrease(SAVING_THROW_ALL, 1)), oTarget, IntToFloat(nDuration));
@@ -318,7 +302,7 @@ void ApplyUndeadLightEffects(object oTarget, int nDuration = 0) {
     ApplyEffectToObject(DURATION_TYPE_INSTANT, EffectDamage(d6(), DAMAGE_TYPE_MAGICAL, DAMAGE_POWER_PLUS_FIVE), oTarget);
 }
 
-void ApplySvirfneblinDarknessEffects(object oPC, int nDuration) {
+void ApplyDeepGnomeDarknessEffects(object oPC, int nDuration) {
     ApplyEffectToObject(DURATION_TYPE_TEMPORARY, EffectSkillIncrease(SKILL_HIDE, 2), oPC, IntToFloat(nDuration));
 }
 
@@ -330,9 +314,9 @@ void HandleSubRaceLocationEffects() {
 
     // If it is daytime, it is light outside
     if (GetLocalInt(aPCArea, "sam_underground")) {
-        if (IsSvirfneblin(oPC)) {
+        if (IsDeepGnome(oPC)) {
             // Svirfneblin effect
-            ApplySvirfneblinDarknessEffects(oPC, 11);
+            // ApplySvirfneblinDarknessEffects(oPC, 11);
         }
     }
     if (GetIsDay()) {
@@ -375,9 +359,9 @@ void ApplyDrowEffects(object oPC) {
     }
 }
 
-void ApplySvirfneblinEffects(object oPC) {
-    SendMessageToPC(oPC, "Svirfneblin effects applied.");
-    object enforcer = GetEffectEnforcer("svirfneblinenforcer");
+void ApplyDeepGnomeEffects(object oPC) {
+    SendMessageToPC(oPC, "Deep Gnome effects applied.");
+    object enforcer = GetEffectEnforcer("deepgnomeenforcer");
     AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectSpellResistanceIncrease(GetHitDice(oPC) + 11)), oPC));
     AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectVisualEffect(VFX_DUR_DARKVISION)), oPC));
     AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectSavingThrowIncrease(SAVING_THROW_ALL, 2)), oPC));
@@ -395,7 +379,7 @@ void ApplyHalfRedDragonEffects(object oPC) {
     SendMessageToPC(oPC, "Half-red dragon effects applied.");
     object enforcer = GetEffectEnforcer("halfreddragonenforcer");
     AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectVisualEffect(VFX_DUR_DARKVISION)), oPC));
-    AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectDamageImmunityIncrease(DAMAGE_TYPE_FIRE, 100)), oPC));
+    AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectDamageImmunityIncrease(DAMAGE_TYPE_FIRE, 50)), oPC));
     AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectSavingThrowIncrease(SAVING_THROW_TYPE_MIND_SPELLS, 5)), oPC));
     AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectDamageImmunityDecrease(DAMAGE_TYPE_COLD, 50)), oPC));
     if (!GetLocalInt(oPC, "sam_subrace_converted")) {
@@ -410,12 +394,32 @@ void ApplyHalfRedDragonEffects(object oPC) {
 void ApplyAluDemonEffects(object oPC) {
     SendMessageToPC(oPC, "Alu-Demon effects applied.");
     object enforcer = GetEffectEnforcer("aludemonenforcer");
-    AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectUltravision()), oPC));
+    AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectDarkvision()), oPC));
+     AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectSkillIncrease(SKILL_PERSUADE, 2)), oPC));
+  AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectDamageImmunityDecrease(DAMAGE_TYPE_DIVINE, 25)), oPC));
     if (!GetLocalInt(oPC, "sam_subrace_converted")) {
       AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectACIncrease(2, AC_NATURAL_BONUS)), oPC));
+       AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectAbilityIncrease(ABILITY_STRENGTH, 1)), oPC));
     }
 }
+void ApplyAluFiendEffects(object oPC) {
+    SendMessageToPC(oPC, "Alu-Fiend effects applied.");
+    object enforcer = GetEffectEnforcer("alufiendenforcer");
+    AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectDarkvision()), oPC));
+    AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectDamageResistance(DAMAGE_TYPE_FIRE, 5)), oPC));
+    AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectDamageResistance(DAMAGE_TYPE_ELECTRICAL, 5)), oPC));
+    AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectDamageResistance(DAMAGE_TYPE_COLD, 5)), oPC));
+    AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectSkillIncrease(SKILL_BLUFF, 2)), oPC));
+    AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectSkillIncrease(SKILL_HIDE, 2)), oPC));
+    AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectSkillIncrease(SKILL_MOVE_SILENTLY, 2)), oPC));
 
+    if (!GetLocalInt(oPC, "sam_subrace_converted")) {
+      AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectACIncrease(2, AC_NATURAL_BONUS)), oPC));
+AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectAbilityIncrease(ABILITY_DEXTERITY, 1)), oPC));
+      AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectAbilityDecrease(ABILITY_CHARISMA, 1)), oPC));
+      AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectAbilityDecrease(ABILITY_WISDOM, 1)), oPC));
+    }
+}
 void ApplyCambionEffects(object oPC) {
     SendMessageToPC(oPC, "Cambion effects applied.");
     object enforcer = GetEffectEnforcer("cambionenforcer");
@@ -447,9 +451,7 @@ void ApplyTieflingEffects(object oPC) {
     SendMessageToPC(oPC, "Tiefling effects applied.");
     object enforcer = GetEffectEnforcer("tieflingenforcer");
     AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectDamageResistance(DAMAGE_TYPE_FIRE, 5)), oPC));
-    AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectDamageResistance(DAMAGE_TYPE_ELECTRICAL, 5)), oPC));
-    AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectDamageResistance(DAMAGE_TYPE_COLD, 5)), oPC));
-    AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectVisualEffect(VFX_DUR_DARKVISION)), oPC));
+      AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectVisualEffect(VFX_DUR_DARKVISION)), oPC));
     AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectSkillIncrease(SKILL_HIDE, 2)), oPC));
     if (!GetLocalInt(oPC, "sam_subrace_converted")) {
       AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectAbilityDecrease(ABILITY_CHARISMA, 2)), oPC));
@@ -470,32 +472,6 @@ void ApplyDuergarEffects(object oPC) {
     }
 }
 
-void ApplyGoldDwarfEffects(object oPC) {
-    SendMessageToPC(oPC, "Gold Dwarf effects applied.");
-    object enforcer = GetEffectEnforcer("golddwarfenforcer");
-    if (!GetLocalInt(oPC, "sam_subrace_converted")) {
-      AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectAbilityIncrease(ABILITY_CHARISMA, 2)), oPC));
-      AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectAbilityDecrease(ABILITY_DEXTERITY, 2)), oPC));
-    }
-}
-
-void ApplySunElfEffects(object oPC) {
-    SendMessageToPC(oPC, "Sun Elf effects applied.");
-    object enforcer = GetEffectEnforcer("sunelfenforcer");
-    if (!GetLocalInt(oPC, "sam_subrace_converted")) {
-      AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectAbilityIncrease(ABILITY_INTELLIGENCE, 2)), oPC));
-      AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectAbilityDecrease(ABILITY_DEXTERITY, 2)), oPC));
-    }
-}
-
-void ApplyWildElfEffects(object oPC) {
-    SendMessageToPC(oPC, "Wild Elf effects applied.");
-    object enforcer = GetEffectEnforcer("wildelfenforcer");
-    if (!GetLocalInt(oPC, "sam_subrace_converted")) {
-      AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectAbilityDecrease(ABILITY_INTELLIGENCE, 2)), oPC));
-      AssignCommand(enforcer, ApplyEffectToObject(DURATION_TYPE_PERMANENT, SupernaturalEffect(EffectAbilityIncrease(ABILITY_CONSTITUTION, 2)), oPC));
-    }
-}
 
 void ApplyWoodElfEffects(object oPC) {
     SendMessageToPC(oPC, "Wood Elf effects applied.");
@@ -560,12 +536,16 @@ int ApplySubRaceEffects(object oPC) {
         ApplyDrowEffects(oPC);
         nValue = 1;
     }
-    if (IsSvirfneblin(oPC)) {
-        ApplySvirfneblinEffects(oPC);
+    if (IsDeepGnome(oPC)) {
+        ApplyDeepGnomeEffects(oPC);
         nValue = 1;
     }
     if (IsAluDemon(oPC)) {
         ApplyAluDemonEffects(oPC);
+        nValue = 1;
+    }
+      if (IsAluFiend(oPC)) {
+        ApplyAluFiendEffects(oPC);
         nValue = 1;
     }
     if (IsCambion(oPC)) {
@@ -584,21 +564,12 @@ int ApplySubRaceEffects(object oPC) {
         ApplyAasimarEffects(oPC);
         nValue = 1;
     }
-    if (IsGoldDwarf(oPC)) {
-        ApplyGoldDwarfEffects(oPC);
-        nValue = 1;
-    }
+  
     if (IsTiefling(oPC)) {
         ApplyTieflingEffects(oPC);
         nValue = 1;
-    }
-    if (IsSunElf(oPC)) {
-        ApplySunElfEffects(oPC);
-        nValue = 1;
-    }
-    if (IsWildElf(oPC)) {
-        ApplyWildElfEffects(oPC);
-        nValue = 1;
+    
+  
     }
     if (IsWoodElf(oPC)) {
         ApplyWoodElfEffects(oPC);
@@ -628,9 +599,13 @@ void TieflingDarknessActivated(object oPC, location lLocation) {
     AssignCommand(oPC, ActionCastSpellAtLocation(SPELL_DARKNESS, lLocation, METAMAGIC_NONE, TRUE));
 }
 
-void AluDemonCharmActivated(object oPC, object oTarget) {
+void AluDemonTouchActivated(object oPC, object oTarget) {
+    AssignCommand(oPC, ActionCastSpellAtObject(SPELL_VAMPIRIC_TOUCH, oTarget, METAMAGIC_NONE, TRUE));
+}
+void AluFiendCharmActivated(object oPC, object oTarget) {
     AssignCommand(oPC, ActionCastSpellAtObject(SPELL_CHARM_PERSON, oTarget, METAMAGIC_NONE, TRUE));
 }
+
 
 void CambionFearActivated(object oPC, location lLocation) {
     AssignCommand(oPC, ActionCastSpellAtLocation(SPELL_FEAR, lLocation, METAMAGIC_NONE, TRUE));
@@ -707,6 +682,10 @@ int use_pc_subrace(object oPC = OBJECT_INVALID)
             SetLocalInt(oPC, "SAM_leveladjustment", 1);
             GiveAluDemonAbility(oPC);
         }
+       if (IsAluFiend(oPC)) {
+            SetLocalInt(oPC, "SAM_leveladjustment", 1);
+            GiveAluFiendAbility(oPC);
+        }
         if (IsTiefling(oPC)) {
             SetLocalInt(oPC, "SAM_leveladjustment", 1);
             GiveTieflingAbility(oPC);
@@ -715,16 +694,16 @@ int use_pc_subrace(object oPC = OBJECT_INVALID)
             SetLocalInt(oPC, "SAM_leveladjustment", 1);
             GiveAasimarAbility(oPC);
         }
-        if (IsDuergar(oPC))
-        {
+        if (IsDuergar(oPC)){
             SetLocalInt(oPC, "SAM_leveladjustment", 2);
+            GiveDuergarAbility(oPC);
         }
         if (IsDrow(oPC))
         {
             SetLocalInt(oPC, "SAM_leveladjustment", 2);
             GiveDrowAbility(oPC);
         }
-        if (IsSvirfneblin(oPC))
+        if (IsDeepGnome(oPC))
         {
             SetLocalInt(oPC, "SAM_leveladjustment", 3);
             GiveDeepGnomeAbility(oPC);
