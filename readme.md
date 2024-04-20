@@ -1,6 +1,9 @@
 > # Menzoberranzan:EE 2023/2024 overunderdark overhaul
 
-New~ Hit the wiki for documentation on changes done/todo's. as of this moment i have not written todo's but it's on my todo list. :-) 
+`04/20/2024` check [here](https://github.com/mhekel/nwnee-sams-menzo/wiki) in our wiki for updates
+
+***
+`04/15/2024` Hit the wiki for documentation on changes done/todo's. as of this moment i have not written todo's but it's on my todo list. :-) 
 
 ## THe Base nwnxee/mod script files +nwnx utilities, nwsync, nwserver doohickeys and cool magic tricks
 for Sam's Server Menzoberranzan v8 so that things are " 'mo betta" :-) 
